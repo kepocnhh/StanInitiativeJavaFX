@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import stan.initiative.res.values.Strings;
 import stan.initiative.ui.scenes.MainScene;
 
 public class Main

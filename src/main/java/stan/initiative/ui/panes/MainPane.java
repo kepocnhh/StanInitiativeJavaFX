@@ -1,30 +1,38 @@
 package stan.initiative.ui.panes;
 
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import javafx.scene.layout.StackPane;
+import stan.initiative.res.values.Colors;
 
 public class MainPane
-    extends StackPane
+    extends VBox
 {
+    //VIEWS
+    public Text audioLevel;
+    public Button startRecognize;
+    public Button stopRecognize;
+
 	public MainPane()
 	{
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                System.out.println("Hello World!");
-            }
-        });
-        this.getChildren().add(btn);
+        initViews();
         init();
 	}
+    private void initViews()
+    {
+        startRecognize = new Button();
+        startRecognize.setText("startRecognize");
+        stopRecognize = new Button();
+        stopRecognize.setText("stopRecognize");
+        audioLevel = new Text(25, 25, "audioLevel");
+        audioLevel.setFill(Colors.red);
+        this.getChildren().add(startRecognize);
+        this.getChildren().add(stopRecognize);
+        this.getChildren().add(audioLevel);
+    }
 	private void init()
 	{
 
