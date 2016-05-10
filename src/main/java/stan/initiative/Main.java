@@ -17,7 +17,7 @@ public class Main
     @Override
     public void start(Stage primaryStage)
     {
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new MainScene(primaryStage));
         primaryStage.getScene().getStylesheets().add("css/StanTheme.css");
         primaryStage.show();
