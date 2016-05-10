@@ -1,6 +1,8 @@
 package stan.initiative.ui.panes;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -11,7 +13,25 @@ import stan.initiative.ui.controls.buttons.StanButton;
 
 public class MainPane
     extends VBox
+    // extends Parent
 {
+    static private MainPane instance;
+    static public MainPane getInstance()
+    {
+        if(instance == null)
+        {
+            try
+            {
+                instance = FXMLLoader.load(MainPane.class.getResource("/fxml/panes/MainPane.fxml"));
+            }
+            catch(Exception e)
+            {
+                System.out.print(e.getMessage());
+            }
+        }
+        return instance;
+    }
+
     //VIEWS
     public Text audioLevel;
     public StanButton startRecognize;
@@ -19,8 +39,8 @@ public class MainPane
 
 	public MainPane()
 	{
-        initViews();
-        init();
+        // initViews();
+        // init();
 	}
     private void initViews()
     {

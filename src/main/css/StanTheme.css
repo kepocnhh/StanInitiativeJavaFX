@@ -1,14 +1,8 @@
 #stan_button {
--fx-background-color: #1a4d71; 
--fx-border-color: rgba(0, 0, 0, 0.4); 
--fx-border-width: 1;
-/*
-  text-decoration: none;
-  color: #fff;
-  background-color: #26a69a;
-  text-align: center;
-  letter-spacing: .5px;
-  transition: .2s ease-out;
-  cursor: pointer;
-  */
+    -fx-padding: 0.7em 0.57em;
+    -fx-font-size: 14px;
+    -fx-button-type: RAISED;
+    -fx-background-color: rgb(77,102,204);
+    -fx-pref-width: 200;
+    -fx-text-fill: WHITE;
 }

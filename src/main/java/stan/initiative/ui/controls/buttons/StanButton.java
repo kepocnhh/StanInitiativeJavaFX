@@ -8,6 +8,6 @@ public class StanButton
 	public StanButton()
 	{
         super();
-            setId("stan_button"); 
+        setId("stan_button"); 
 	}
 }
