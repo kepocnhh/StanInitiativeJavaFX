@@ -10,7 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import stan.initiative.res.values.Colors;
-import stan.initiative.ui.controls.buttons.StanButton;
+import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 
 public class MainPane
     extends VBox
@@ -18,7 +18,7 @@ public class MainPane
     //VIEWS
     public Text audioLevel;
     //public StackPane stack;
-    public StanButton startRecognize;
+    public VoiceRecognitionButton startRecognize;
     public Button stopRecognize;
 
 	public MainPane()

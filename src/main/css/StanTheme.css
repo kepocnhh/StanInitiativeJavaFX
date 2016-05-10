@@ -7,6 +7,12 @@
     -fx-border-color: black;
     -fx-border-width: 2.0px;
 }
+#round_red {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
 #stan_button:disabled {
     -fx-border-color: rgb(0, 0, 0, 0.7);
 }
@@ -16,6 +22,15 @@
 #stan_button:pressed {
     -fx-background-color: black;
     -fx-border-color: white;
+}
+#circle_pane {
+    -fx-pref-width: 4.0em;
+    -fx-pref-height: 4.0em;
+    -fx-background-radius: 2.0em;
+    -fx-background-color: null;
+    -fx-border-radius: 2.0em;
+    -fx-border-color: black;
+    -fx-border-width: 2.0px;
 }
 
 #red_button {
@@ -53,4 +68,29 @@
 	-fx-min-height: 30px;
 	-fx-max-width: 30px;
 	-fx-max-height: 30px;
+}
+#vr_button_start, #vr_button_stop {
+    -fx-background-radius: 5em;
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+}
+#vr_button_start {
+    -fx-background-color: #ff5400;
+}
+#vr_button_start:hover {
+    -fx-background-color: #ffaa55;
+}
+#vr_button_start:pressed {
+    -fx-background-color: #ffeedd;
+}
+#vr_button_stop {
+    -fx-background-color: #ffeedd;
+}
+#vr_button_stop:hover {
+    -fx-background-color: #ffaa55;
+}
+#vr_button_stop:pressed {
+    -fx-background-color: #ff5400;
 }
