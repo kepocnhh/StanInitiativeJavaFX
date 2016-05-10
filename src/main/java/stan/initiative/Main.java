@@ -19,6 +19,7 @@ public class Main
     {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new MainScene(primaryStage));
+        primaryStage.getScene().getStylesheets().add("css/StanTheme.css");
         primaryStage.show();
     }
 }

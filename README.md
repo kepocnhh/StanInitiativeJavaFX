@@ -11,5 +11,8 @@ StanInitiative project on JavaFX
 ## build_jar
 > "%JAVA_HOME%/bin/javafxpackager" -createjar -appclass stan.initiative.Main -srcdir bin -classPath "lib/StanVoiceRecognition.jar" -outfile StanInitiative
 
+## build_css
+> "%JAVA_HOME%/bin/javafxpackager" -createbss -srcdir ./src/main/css -outdir bin/css -srcfiles StanTheme.css -v
+
 ## run_jar
 > "%JAVA_HOME%/bin/javaw" -jar StanInitiative.jar
