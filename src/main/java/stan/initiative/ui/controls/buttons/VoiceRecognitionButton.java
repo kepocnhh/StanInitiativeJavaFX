@@ -5,18 +5,16 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
+import stan.initiative.listeners.voice.IRecognizeListener;
+
 public class VoiceRecognitionButton
     extends Button
+    implements IRecognizeListener
 {
     public interface IMouseEventButtonListener
     {
         void mousePressed(MouseEvent event);
         void mouseDragged(MouseEvent event);
-    }
-    public interface IRecognizeListener
-    {
-        void startRecognize();
-        void stopRecognize();
     }
 
     private boolean dragged = false;
@@ -28,6 +26,32 @@ public class VoiceRecognitionButton
     {
         super();
         setId("vr_button_stop");
+        resetRecognizeListener();
+        this.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                if(dragged)
+                {
+                    return;
+                }
+                if(startRecognize)
+                {
+                    recognizeListener.stopRecognize();
+                    setId("vr_button_stop");
+                }
+                else
+                {
+                    if(!recognizeListener.startRecognize())
+                    {
+                        return;
+                    }
+                    setId("vr_button_start");
+                }
+                startRecognize = !startRecognize;
+            }
+        });
     }
 
     public void setMouseEventListener(IMouseEventButtonListener l)
@@ -54,29 +78,11 @@ public class VoiceRecognitionButton
     }
     public void setRecognizeListener(IRecognizeListener l)
     {
-    	recognizeListener = l;
-        this.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                if(dragged)
-                {
-                    return;
-                }
-                if(startRecognize)
-                {
-                	recognizeListener.stopRecognize();
-        			setId("vr_button_stop");
-                }
-                else
-                {
-                	recognizeListener.startRecognize();
-        			setId("vr_button_start");
-                }
-                startRecognize = !startRecognize;
-            }
-        });
+        recognizeListener = l;
+    }
+    public void resetRecognizeListener()
+    {
+        setRecognizeListener(this);
     }
     public void setScale(double scale)
     {
@@ -86,5 +92,15 @@ public class VoiceRecognitionButton
     public void returnScale()
     {
         this.setScale(1);
+    }
+
+    @Override
+    public boolean startRecognize()
+    {
+        return false;
+    }
+    @Override
+    public void stopRecognize()
+    {
     }
 }
