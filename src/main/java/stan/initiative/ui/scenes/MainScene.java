@@ -1,6 +1,7 @@
 package stan.initiative.ui.scenes;
 
 import java.io.File;
+import java.util.HashMap;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -15,6 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import stan.initiative.helpers.FileReaderHelper;
+import stan.initiative.helpers.google.SpeechApiHelper;
+import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.res.values.Strings;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
@@ -78,6 +81,7 @@ public class MainScene
             @Override
             public void getSpeech(GoogleResponse deserialized)
             {
+        		//System.out.println(deserialized.toString());
             }
             @Override
             public void audioLevel(int al)
@@ -96,9 +100,9 @@ public class MainScene
             }
         }, googleSpeechApiKey);
     }
-    private void initFromConfiguration(String googleSpeechApiKey)
+    private void initFromConfiguration()
     {
-        initVoiceRecognition(googleSpeechApiKey);
+        initVoiceRecognition(SpeechApiHelper.API_KEY);
         mainPane.startRecognize.setRecognizeListener(this);
     }
     private void openConfigureFile()
@@ -116,7 +120,26 @@ public class MainScene
     private void initFromFile(String filename)
     {
     	String result = FileReaderHelper.readFile(filename);
-        System.out.println(result);
+    	JSONParser parser = new JSONParser();
+    	HashMap obj = null;
+    	try
+    	{
+    		obj = (HashMap)parser.parse(result);
+    	}
+    	catch(Exception e)
+    	{
+        	System.out.println("Read file error - " + e.getMessage());
+        	return;
+    	}
+    	initFromHashMap(obj);
+    }
+    private void initFromHashMap(HashMap main)
+    {
+    	HashMap telegram = (HashMap)main.get("telegram");
+    	HashMap google = (HashMap)main.get("google");
+    	HashMap speechapi = (HashMap)google.get("speechapi");
+    	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
+    	initFromConfiguration();
     }
     private void exit()
     {
