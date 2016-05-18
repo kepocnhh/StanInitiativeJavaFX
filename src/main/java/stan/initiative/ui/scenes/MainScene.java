@@ -24,7 +24,7 @@ import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
 
 import stan.voice.recognition.Voice;
-import stan.voice.recognition.google.response.GoogleResponse;
+import stan.voice.recognition.GoogleResponse;
 
 public class MainScene
     extends Scene
@@ -98,7 +98,25 @@ public class MainScene
                     mainPane.startRecognize.setScale(size);
                 }
             }
-        }, googleSpeechApiKey);
+        }, googleSpeechApiKey)
+		{
+			@Override
+			public GoogleResponse deSerialize(String response)
+			{
+				JSONParser parser = new JSONParser();
+				HashMap obj = null;
+				try
+				{
+					obj = (HashMap)parser.parse(response);
+				}
+				catch(Exception e)
+				{
+					System.out.println("parse response error - " + e.getMessage());
+					return null;
+				}
+				return new GoogleResponse<HashMap>(obj, response);
+			}
+		};
     }
     private void initFromConfiguration()
     {
@@ -154,7 +172,15 @@ public class MainScene
     @Override
     public boolean startRecognize()
     {
-        voice.startRecognize();
+		try
+		{
+			voice.startRecognize();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Voice start Recognize error - " + e.getMessage());
+			return false;
+		}
         return true;
     }
     @Override
