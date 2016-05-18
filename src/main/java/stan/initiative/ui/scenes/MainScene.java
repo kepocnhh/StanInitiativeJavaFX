@@ -1,6 +1,7 @@
 package stan.initiative.ui.scenes;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.application.Platform;
@@ -30,17 +31,18 @@ public class MainScene
     extends Scene
     implements IRecognizeListener
 {
+    static private final int height = 224;
+    static private final int width = 224;
+
     private VoiceRecognitionPane mainPane;
     private FileChooser fileChooser;
     private Stage primaryStage;
 
     private Voice voice;
-    boolean dragged = false;
-    Thread test;
 
     public MainScene(Stage pStage)
     {
-        super(new VoiceRecognitionPane(pStage), 200, 200, Color.TRANSPARENT);
+        super(new VoiceRecognitionPane(pStage), height, width, Color.TRANSPARENT);
         this.mainPane = (VoiceRecognitionPane)this.getRoot();
         this.fileChooser = new FileChooser();
         this.primaryStage = pStage;
@@ -81,42 +83,63 @@ public class MainScene
             @Override
             public void getSpeech(GoogleResponse deserialized)
             {
-        		//System.out.println(deserialized.toString());
+				//System.out.println("responseString - " + deserialized.responseString);
+				//System.out.println("responseObject - " + deserialized.responseObject);
+				ArrayList alternatives = getAlternatives((HashMap)deserialized.responseObject);
+				if(alternatives.size() > 0)
+				{
+					System.out.println("response - " + ((HashMap)alternatives.get(0)).get("transcript"));
+				}
             }
             @Override
             public void audioLevel(int al)
             {
                 double size = 1;
-                if(al > 500)
+                if(al > 1500)
                 {
-                    int temp = al / 5 + al / (100000 / (al * 2));
-                    if(temp < 500)
-                    {
-                        temp = 500;
-                    }
-                    size = (double)temp / 500;
-                    mainPane.startRecognize.setScale(size);
+                	double temp = 0;
+	                if(al > 3500)
+	                {
+	                	temp = 3500;
+	                }
+	                else
+	                {
+                    	temp = al;
+	                }
+                	temp -= (temp-1500)/2;
+					//System.out.println("temp - " + temp);
+                	size = temp/1500;
+					//System.out.println("size - " + size);
                 }
+                mainPane.startRecognize.setScale(size);
             }
         }, googleSpeechApiKey)
 		{
 			@Override
 			public GoogleResponse deSerialize(String response)
 			{
+				response = response.replace("{\"result\":[]}","");
+				if(response.length() == 0)
+				{
+					response = "{\"result\":[{\"alternative\":[]}]}";
+				}
 				JSONParser parser = new JSONParser();
 				HashMap obj = null;
 				try
 				{
-					obj = (HashMap)parser.parse(response);
+					obj = (HashMap) parser.parse(response);
 				}
 				catch(Exception e)
 				{
 					System.out.println("parse response error - " + e.getMessage());
-					return null;
 				}
 				return new GoogleResponse<HashMap>(obj, response);
 			}
 		};
+    }
+    private ArrayList getAlternatives(HashMap responseObject)
+    {
+    	return (ArrayList) ((HashMap)((ArrayList)responseObject.get("result")).get(0)).get("alternative");
     }
     private void initFromConfiguration()
     {
