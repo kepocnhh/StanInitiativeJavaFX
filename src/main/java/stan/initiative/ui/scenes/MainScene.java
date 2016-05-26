@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import stan.initiative.commander.Commander;
 import stan.initiative.helpers.FileReaderHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
@@ -88,7 +89,7 @@ public class MainScene
 				ArrayList alternatives = getAlternatives((HashMap)deserialized.responseObject);
 				if(alternatives.size() > 0)
 				{
-					System.out.println("response - " + ((HashMap)alternatives.get(0)).get("transcript"));
+					parseAlternatives(alternatives);
 				}
             }
             @Override
@@ -137,6 +138,11 @@ public class MainScene
 			}
 		};
     }
+	private void parseAlternatives(ArrayList alternatives)
+	{
+		System.out.println("response - " + ((HashMap)alternatives.get(0)).get("transcript"));
+	}
+	
     private ArrayList getAlternatives(HashMap responseObject)
     {
     	return (ArrayList) ((HashMap)((ArrayList)responseObject.get("result")).get(0)).get("alternative");
@@ -177,6 +183,12 @@ public class MainScene
     private void initFromHashMap(HashMap main)
     {
     	HashMap telegram = (HashMap)main.get("telegram");
+    	HashMap commander = (HashMap)main.get("commander");
+		Commander.getInstance().initData((ArrayList)commander.get("modes"), (ArrayList)commander.get("states"), (ArrayList)commander.get("commands"));
+		for(int i=0; i<Commander.getInstance().modes.size(); i++)
+		{
+			System.out.println(i + ") " + Commander.getInstance().modes.get(i).name);
+		}
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
