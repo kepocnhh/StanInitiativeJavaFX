@@ -4,6 +4,12 @@ import java.util.List;
 
 public class State
 {
-	private String name;
+	public String name;
     private List<Command> commands;
+
+	public State(String n, List<Command> c)
+	{
+		name = n;
+		commands = c;
+	}
 }

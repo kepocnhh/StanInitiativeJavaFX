@@ -183,16 +183,27 @@ public class MainScene
     private void initFromHashMap(HashMap main)
     {
     	HashMap telegram = (HashMap)main.get("telegram");
-    	HashMap commander = (HashMap)main.get("commander");
+    	initCommander((HashMap)main.get("commander"));
+    	HashMap google = (HashMap)main.get("google");
+    	HashMap speechapi = (HashMap)google.get("speechapi");
+    	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
+    	initFromConfiguration();
+    }
+    private void initCommander(HashMap commander)
+    {
 		Commander.getInstance().initData((ArrayList)commander.get("modes"), (ArrayList)commander.get("states"), (ArrayList)commander.get("commands"));
 		for(int i=0; i<Commander.getInstance().modes.size(); i++)
 		{
 			System.out.println(i + ") " + Commander.getInstance().modes.get(i).name);
 		}
-    	HashMap google = (HashMap)main.get("google");
-    	HashMap speechapi = (HashMap)google.get("speechapi");
-    	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
-    	initFromConfiguration();
+		for(int i=0; i<Commander.getInstance().states.size(); i++)
+		{
+			System.out.println(i + ") " + Commander.getInstance().states.get(i).name);
+		}
+		for(int i=0; i<Commander.getInstance().commands.size(); i++)
+		{
+			System.out.println(i + ") " + Commander.getInstance().commands.get(i).name);
+		}
     }
     private void exit()
     {

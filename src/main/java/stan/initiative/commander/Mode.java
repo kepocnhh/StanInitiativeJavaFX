@@ -6,10 +6,11 @@ public class Mode
 {
 	public String name;
     private List<State> states;
-	
-	public Mode(String n)
+
+	public Mode(String n, List<State> s)
 	{
 		name = n;
+		states = s;
 	}
 	
 	public boolean canFinish()
