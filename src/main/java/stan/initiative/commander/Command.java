@@ -3,7 +3,7 @@ package stan.initiative.commander;
 public class Command
 {
 	public String name;
-	private String[] keys;
+	public String[] keys;
 
 	public Command(String n, String[] k)
 	{

@@ -1,13 +1,11 @@
 package stan.initiative.commander;
 
-import java.util.List;
-
 public class Mode
 {
 	public String name;
-    private List<State> states;
+    public State[] states;
 
-	public Mode(String n, List<State> s)
+	public Mode(String n, State[] s)
 	{
 		name = n;
 		states = s;

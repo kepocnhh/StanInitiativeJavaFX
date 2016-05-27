@@ -192,17 +192,9 @@ public class MainScene
     private void initCommander(HashMap commander)
     {
 		Commander.getInstance().initData((ArrayList)commander.get("modes"), (ArrayList)commander.get("states"), (ArrayList)commander.get("commands"));
-		for(int i=0; i<Commander.getInstance().modes.size(); i++)
+		for(int i=0; i<Commander.getInstance().modes.length; i++)
 		{
-			System.out.println(i + ") " + Commander.getInstance().modes.get(i).name);
-		}
-		for(int i=0; i<Commander.getInstance().states.size(); i++)
-		{
-			System.out.println(i + ") " + Commander.getInstance().states.get(i).name);
-		}
-		for(int i=0; i<Commander.getInstance().commands.size(); i++)
-		{
-			System.out.println(i + ") " + Commander.getInstance().commands.get(i).name);
+			System.out.println(i + ") " + Commander.getInstance().modes[i].name);
 		}
     }
     private void exit()
