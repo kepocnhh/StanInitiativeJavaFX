@@ -1,9 +1,11 @@
 package stan.initiative.helpers;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 
-public class FileReaderHelper
+public class FileHelper
 {
     static public String readFile(String filename)
     {
@@ -45,4 +47,30 @@ public class FileReaderHelper
         }
         return everything;
     }
+    static public void writeFile(String data, String filename)
+    {
+		BufferedWriter bw = null;
+		try
+		{
+			bw = new BufferedWriter(new FileWriter(filename));
+			bw.write(data);
+		}
+		catch(Exception e)
+		{
+		}
+		finally
+		{
+            if(bw != null)
+            {
+                try
+                {
+                    bw.close();
+                }
+                catch(Exception e)
+                {
+                	
+                }
+            }
+		}
+	}
 }

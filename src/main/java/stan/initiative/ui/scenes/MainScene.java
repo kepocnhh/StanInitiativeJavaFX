@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 import stan.initiative.block.note.Core;
 import stan.initiative.commander.Commander;
-import stan.initiative.helpers.FileReaderHelper;
+import stan.initiative.helpers.FileHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
@@ -168,7 +168,7 @@ public class MainScene
     }
     private void initFromFile(String filename)
     {
-    	String result = FileReaderHelper.readFile(filename);
+    	String result = FileHelper.readFile(filename);
     	JSONParser parser = new JSONParser();
     	HashMap obj = null;
     	try
@@ -201,7 +201,7 @@ public class MainScene
     }
     private void initBlockNote()
     {
-		Core.getInstance();
+		
 	}
     private void exit()
     {
