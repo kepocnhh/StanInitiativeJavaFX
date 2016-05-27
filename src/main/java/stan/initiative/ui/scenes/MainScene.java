@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import stan.initiative.block.note.Core;
 import stan.initiative.commander.Commander;
 import stan.initiative.helpers.FileReaderHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
@@ -52,6 +53,7 @@ public class MainScene
     private void init()
     {
         mainPane.startRecognize.setContextMenu(initContextMenu());
+		initBlockNote();
     }
     private ContextMenu initContextMenu()
     {
@@ -183,7 +185,7 @@ public class MainScene
     private void initFromHashMap(HashMap main)
     {
     	HashMap telegram = (HashMap)main.get("telegram");
-    	initCommander((HashMap)main.get("commander"));
+    	//initCommander((HashMap)main.get("commander"));
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
@@ -197,6 +199,10 @@ public class MainScene
 			System.out.println(i + ") " + Commander.getInstance().modes[i].name);
 		}
     }
+    private void initBlockNote()
+    {
+		Core.getInstance();
+	}
     private void exit()
     {
         if(voice != null)
