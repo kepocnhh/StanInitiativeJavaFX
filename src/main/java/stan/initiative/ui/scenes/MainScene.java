@@ -16,7 +16,8 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import stan.initiative.block.note.Core;
+import stan.initiative.block.note.Block;
+import stan.initiative.block.note.BNCore;
 import stan.initiative.commander.Commander;
 import stan.initiative.helpers.FileHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
@@ -53,12 +54,12 @@ public class MainScene
     private void init()
     {
         mainPane.startRecognize.setContextMenu(initContextMenu());
-		initBlockNote();
     }
     private ContextMenu initContextMenu()
     {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem openConfigure = new MenuItem("Open configuration file");
+        MenuItem openBlockNote = new MenuItem("Open BlockNote");
         MenuItem exit = new MenuItem("Exit");
         openConfigure.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -66,6 +67,14 @@ public class MainScene
             public void handle(ActionEvent event)
             {
                 openConfigureFile();
+            }
+        });
+        openBlockNote.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                openBlockNote();
             }
         });
         exit.setOnAction(new EventHandler<ActionEvent>()
@@ -76,7 +85,7 @@ public class MainScene
                 exit();
             }
         });
-        contextMenu.getItems().addAll(openConfigure, exit);
+        contextMenu.getItems().addAll(openConfigure, openBlockNote, exit);
         return contextMenu;
     }
     private void initVoiceRecognition(String googleSpeechApiKey)
@@ -186,6 +195,7 @@ public class MainScene
     {
     	HashMap telegram = (HashMap)main.get("telegram");
     	//initCommander((HashMap)main.get("commander"));
+        initBlockNote((HashMap)main.get("blocknote"));
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
@@ -199,10 +209,32 @@ public class MainScene
 			System.out.println(i + ") " + Commander.getInstance().modes[i].name);
 		}
     }
-    private void initBlockNote()
+    private void initBlockNote(HashMap blocknote)
     {
-		
+        BNCore.getInstance().createBlockNote("E:/Downloads/StanInitiative/blocknote", "awesomebn");
 	}
+
+    private void openBlockNote()
+    {
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if(file != null && file.exists())
+        {
+            BNCore.getInstance().openBlockNote(file.getAbsolutePath());
+            Block block = BNCore.getInstance().getActualBlock();
+            if(block != null)
+            {
+                System.out.println("____BLOCK____");
+                System.out.println("id - " + block.id);
+                System.out.println("name - " + block.name);
+                System.out.println("blocks:" + block.blocks.size());
+            }
+        }
+        else
+        {
+
+        }
+    }
+
     private void exit()
     {
         if(voice != null)
