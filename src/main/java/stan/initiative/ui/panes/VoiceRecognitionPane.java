@@ -1,15 +1,8 @@
 package stan.initiative.ui.panes;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import stan.initiative.res.values.Colors;
@@ -27,7 +20,6 @@ public class VoiceRecognitionPane
 	public VoiceRecognitionPane(final Stage primaryStage)
 	{
         super();
-        //this.setId("circle_pane");
         this.setStyle("-fx-background-color: null");
         startRecognize = new VoiceRecognitionButton();
         startRecognize.setMouseEventListener(new VoiceRecognitionButton.IMouseEventButtonListener()

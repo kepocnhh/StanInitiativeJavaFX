@@ -19,12 +19,9 @@ public class Main
     public void start(Stage primaryStage)
     {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
-        //primaryStage.initModality(Modality.APPLICATION_MODAL);
         primaryStage.setAlwaysOnTop(true);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new MainScene(primaryStage));
         primaryStage.getScene().getStylesheets().add("css/StanTheme.css");
         primaryStage.show();
-        primaryStage.toFront();
     }
 }

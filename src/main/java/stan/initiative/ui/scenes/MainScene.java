@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import stan.initiative.block.note.Block;
 import stan.initiative.block.note.BNCore;
@@ -25,6 +28,7 @@ import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.res.values.Strings;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
+import stan.initiative.ui.panes.BNPane;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
 
 import stan.voice.recognition.Voice;
@@ -40,6 +44,7 @@ public class MainScene
     private VoiceRecognitionPane mainPane;
     private FileChooser fileChooser;
     private Stage primaryStage;
+    private Stage blockNoteStage;
 
     private Voice voice;
 
@@ -49,7 +54,16 @@ public class MainScene
         this.mainPane = (VoiceRecognitionPane)this.getRoot();
         this.fileChooser = new FileChooser();
         this.primaryStage = pStage;
+        initBlockNoteScene();
         init();
+    }
+    private void initBlockNoteScene()
+    {
+        this.blockNoteStage = new Stage();
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        this.blockNoteStage.setScene(new Scene(new BNPane(), screen.getWidth(), screen.getHeight(), Color.BLUE));
+        this.blockNoteStage.initStyle(StageStyle.TRANSPARENT);
+        this.blockNoteStage.show();
     }
     private void init()
     {
