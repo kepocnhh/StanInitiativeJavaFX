@@ -26,6 +26,7 @@ import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.res.values.Strings;
+import stan.initiative.telegram.Telegram;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
 
@@ -192,13 +193,21 @@ public class MainScene
     }
     private void initFromHashMap(HashMap main)
     {
-    	HashMap telegram = (HashMap)main.get("telegram");
+    	initTelegram((HashMap)main.get("telegram"));
     	initCommander((HashMap)main.get("commander"));
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
     	initFromConfiguration();
     }
+    private void initTelegram(HashMap telegram)
+    {
+		HashMap bot = (HashMap)telegram.get("bot");
+		Telegram.getInstance().setBot(
+			((Long)bot.get("id")).intValue(),
+			(String)bot.get("token"),
+			((Long)bot.get("chatIdMe")).intValue());
+	}
     private void initCommander(HashMap commander)
     {
         Commander.getInstance().addExtra(new Controller());
@@ -218,6 +227,11 @@ public class MainScene
     @Override
     public boolean startRecognize()
     {
+		//Telegram.getInstance().getBotUpdates();
+		//Telegram.getInstance().sendBotMessageMe("Hello world!");
+		Telegram.getInstance().sendBotFistStickerMe();
+		return false;
+		/*
 		try
 		{
 			voice.startRecognize();
@@ -228,6 +242,7 @@ public class MainScene
 			return false;
 		}
         return true;
+		*/
     }
     @Override
     public void stopRecognize()
