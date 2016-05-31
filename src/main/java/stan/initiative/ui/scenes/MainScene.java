@@ -19,16 +19,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import stan.initiative.block.note.Block;
-import stan.initiative.block.note.BNCore;
 import stan.initiative.commander.Commander;
+import stan.initiative.commander.Controller;
 import stan.initiative.helpers.FileHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.res.values.Strings;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
-import stan.initiative.ui.panes.BNPane;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
 
 import stan.voice.recognition.Voice;
@@ -54,16 +52,7 @@ public class MainScene
         this.mainPane = (VoiceRecognitionPane)this.getRoot();
         this.fileChooser = new FileChooser();
         this.primaryStage = pStage;
-        initBlockNoteScene();
         init();
-    }
-    private void initBlockNoteScene()
-    {
-        this.blockNoteStage = new Stage();
-        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-        this.blockNoteStage.setScene(new Scene(new BNPane(), screen.getWidth(), screen.getHeight(), Color.BLUE));
-        this.blockNoteStage.initStyle(StageStyle.TRANSPARENT);
-        this.blockNoteStage.show();
     }
     private void init()
     {
@@ -73,7 +62,6 @@ public class MainScene
     {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem openConfigure = new MenuItem("Open configuration file");
-        MenuItem openBlockNote = new MenuItem("Open BlockNote");
         MenuItem exit = new MenuItem("Exit");
         openConfigure.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -81,14 +69,6 @@ public class MainScene
             public void handle(ActionEvent event)
             {
                 openConfigureFile();
-            }
-        });
-        openBlockNote.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                openBlockNote();
             }
         });
         exit.setOnAction(new EventHandler<ActionEvent>()
@@ -99,7 +79,7 @@ public class MainScene
                 exit();
             }
         });
-        contextMenu.getItems().addAll(openConfigure, openBlockNote, exit);
+        contextMenu.getItems().addAll(openConfigure, exit);
         return contextMenu;
     }
     private void initVoiceRecognition(String googleSpeechApiKey)
@@ -165,8 +145,14 @@ public class MainScene
     }
 	private void parseAlternatives(ArrayList alternatives)
 	{
-		System.out.println("response - " + ((HashMap)alternatives.get(0)).get("transcript"));
+        String transcript = (String)((HashMap)alternatives.get(0)).get("transcript");
+		System.out.println("response - " + transcript);
+        parseTranscript(transcript);
 	}
+    private void parseTranscript(String transcript)
+    {
+        Commander.getInstance().parseKey(transcript.toLowerCase());
+    }
 	
     private ArrayList getAlternatives(HashMap responseObject)
     {
@@ -191,12 +177,11 @@ public class MainScene
     }
     private void initFromFile(String filename)
     {
-    	String result = FileHelper.readFile(filename);
-    	JSONParser parser = new JSONParser();
+        String result = FileHelper.readFile(filename);
     	HashMap obj = null;
     	try
     	{
-    		obj = (HashMap)parser.parse(result);
+    		obj = (HashMap)new JSONParser().parse(result);
     	}
     	catch(Exception e)
     	{
@@ -208,8 +193,7 @@ public class MainScene
     private void initFromHashMap(HashMap main)
     {
     	HashMap telegram = (HashMap)main.get("telegram");
-    	//initCommander((HashMap)main.get("commander"));
-        initBlockNote((HashMap)main.get("blocknote"));
+    	initCommander((HashMap)main.get("commander"));
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
@@ -217,36 +201,8 @@ public class MainScene
     }
     private void initCommander(HashMap commander)
     {
+        Commander.getInstance().addExtra(new Controller());
 		Commander.getInstance().initData((ArrayList)commander.get("modes"), (ArrayList)commander.get("states"), (ArrayList)commander.get("commands"));
-		for(int i=0; i<Commander.getInstance().modes.length; i++)
-		{
-			System.out.println(i + ") " + Commander.getInstance().modes[i].name);
-		}
-    }
-    private void initBlockNote(HashMap blocknote)
-    {
-        BNCore.getInstance().createBlockNote("E:/Downloads/StanInitiative/blocknote", "awesomebn");
-	}
-
-    private void openBlockNote()
-    {
-        File file = fileChooser.showOpenDialog(primaryStage);
-        if(file != null && file.exists())
-        {
-            BNCore.getInstance().openBlockNote(file.getAbsolutePath());
-            Block block = BNCore.getInstance().getActualBlock();
-            if(block != null)
-            {
-                System.out.println("____BLOCK____");
-                System.out.println("id - " + block.id);
-                System.out.println("name - " + block.name);
-                System.out.println("blocks:" + block.blocks.size());
-            }
-        }
-        else
-        {
-
-        }
     }
 
     private void exit()

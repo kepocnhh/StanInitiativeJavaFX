@@ -182,53 +182,31 @@ class Yylex
         return j;
     }
 
-    /** the input device */
     private java.io.Reader zzReader;
 
-    /** the current state of the DFA */
     private int zzState;
 
-    /** the current lexical state */
     private int zzLexicalState = YYINITIAL;
 
-    /** this buffer contains the current text to be matched and is
-        the source of the yytext() string */
     private char zzBuffer[] = new char[ZZ_BUFFERSIZE];
 
-    /** the textposition at the last accepting state */
     private int zzMarkedPos;
 
-    /** the current text position in the buffer */
     private int zzCurrentPos;
 
-    /** startRead marks the beginning of the yytext() string in the buffer */
     private int zzStartRead;
 
-    /** endRead marks the last character in the buffer, that has been read
-        from input */
     private int zzEndRead;
 
-    /** number of newlines encountered up to the start of the matched text */
     private int yyline;
 
-    /** the number of characters up to the start of the matched text */
     private int yychar;
 
-    /**
-     * the number of characters from the last newline up to the start of the
-     * matched text
-     */
     private int yycolumn;
 
-    /**
-     * zzAtBOL == true <=> the scanner is currently at the beginning of a line
-     */
     private boolean zzAtBOL = true;
-
-    /** zzAtEOF == true <=> the scanner is at the EOF */
     private boolean zzAtEOF;
 
-    /* user code: */
     private StringBuffer sb = new StringBuffer();
 
     int getPosition()
@@ -236,36 +214,16 @@ class Yylex
         return yychar;
     }
 
-
-
-    /**
-     * Creates a new scanner
-     * There is also a java.io.InputStream version of this constructor.
-     *
-     * @param   in  the java.io.Reader to read input from.
-     */
     Yylex(java.io.Reader in)
     {
         this.zzReader = in;
     }
 
-    /**
-     * Creates a new scanner.
-     * There is also java.io.Reader version of this constructor.
-     *
-     * @param   in  the java.io.Inputstream to read input from.
-     */
     Yylex(java.io.InputStream in)
     {
         this(new java.io.InputStreamReader(in));
     }
 
-    /**
-     * Unpacks the compressed character translation table.
-     *
-     * @param packed   the packed character translation table
-     * @return         the unpacked character translation table
-     */
     private static char [] zzUnpackCMap(String packed)
     {
         char [] map = new char[0x10000];
@@ -280,37 +238,24 @@ class Yylex
         return map;
     }
 
-
-    /**
-     * Refills the input buffer.
-     *
-     * @return      <code>false</code>, iff there was new input.
-     *
-     * @exception   java.io.IOException  if any I/O-Error occurs
-     */
     private boolean zzRefill() throws java.io.IOException
     {
-        /* first: make room (if you can) */
         if(zzStartRead > 0)
         {
             System.arraycopy(zzBuffer, zzStartRead,
                              zzBuffer, 0,
                              zzEndRead - zzStartRead);
-            /* translate stored positions */
             zzEndRead -= zzStartRead;
             zzCurrentPos -= zzStartRead;
             zzMarkedPos -= zzStartRead;
             zzStartRead = 0;
         }
-        /* is the buffer big enough? */
         if(zzCurrentPos >= zzBuffer.length)
         {
-            /* if not: blow it up */
             char newBuffer[] = new char[zzCurrentPos * 2];
             System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
             zzBuffer = newBuffer;
         }
-        /* finally: fill the buffer with new input */
         int numRead = zzReader.read(zzBuffer, zzEndRead,
                                     zzBuffer.length - zzEndRead);
         if(numRead > 0)
@@ -318,7 +263,6 @@ class Yylex
             zzEndRead += numRead;
             return false;
         }
-        // unlikely but not impossible: read 0 characters, but not at end of stream
         if(numRead == 0)
         {
             int c = zzReader.read();
@@ -332,14 +276,9 @@ class Yylex
                 return false;
             }
         }
-        // numRead < 0
         return true;
     }
 
-
-    /**
-     * Closes the input stream.
-     */
     public final void yyclose() throws java.io.IOException
     {
         zzAtEOF = true;            /* indicate end of file */
@@ -348,17 +287,6 @@ class Yylex
             zzReader.close();
     }
 
-
-    /**
-     * Resets the scanner to read from a new input stream.
-     * Does not close the old reader.
-     *
-     * All internal variables are reset, the old input stream
-     * <b>cannot</b> be reused (internal buffer is discarded and lost).
-     * Lexical state is set to <tt>ZZ_INITIAL</tt>.
-     *
-     * @param reader   the new input stream
-     */
     public final void yyreset(java.io.Reader reader)
     {
         zzReader = reader;
@@ -370,76 +298,31 @@ class Yylex
         zzLexicalState = YYINITIAL;
     }
 
-
-    /**
-     * Returns the current lexical state.
-     */
     public final int yystate()
     {
         return zzLexicalState;
     }
 
-
-    /**
-     * Enters a new lexical state
-     *
-     * @param newState the new lexical state
-     */
     public final void yybegin(int newState)
     {
         zzLexicalState = newState;
     }
 
-
-    /**
-     * Returns the text matched by the current regular expression.
-     */
     public final String yytext()
     {
         return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
     }
 
-
-    /**
-     * Returns the character at position <tt>pos</tt> from the
-     * matched text.
-     *
-     * It is equivalent to yytext().charAt(pos), but faster
-     *
-     * @param pos the position of the character to fetch.
-     *            A value from 0 to yylength()-1.
-     *
-     * @return the character at position pos
-     */
     public final char yycharat(int pos)
     {
         return zzBuffer[zzStartRead + pos];
     }
 
-
-    /**
-     * Returns the length of the matched text region.
-     */
     public final int yylength()
     {
         return zzMarkedPos - zzStartRead;
     }
 
-
-    /**
-     * Reports an error that occured while scanning.
-     *
-     * In a wellformed scanner (no or only correct usage of
-     * yypushback(int) and a match-all fallback rule) this method
-     * will only be called with things that "Can't Possibly Happen".
-     * If this method is called, something is seriously wrong
-     * (e.g. a JFlex bug producing a faulty scanner etc.).
-     *
-     * Usual syntax/scanner level error handling should be done
-     * in error fallback rules.
-     *
-     * @param   errorCode  the code of the errormessage to display
-     */
     private void zzScanError(int errorCode)
     {
         String message;
@@ -454,15 +337,6 @@ class Yylex
         throw new Error(message);
     }
 
-
-    /**
-     * Pushes the specified amount of characters back into the input stream.
-     *
-     * They will be read again by then next call of the scanning method
-     *
-     * @param number  the number of characters to be read again.
-     *                This number must not be greater than yylength()!
-     */
     public void yypushback(int number)
     {
         if(number > yylength())
@@ -470,14 +344,6 @@ class Yylex
         zzMarkedPos -= number;
     }
 
-
-    /**
-     * Resumes scanning until the next regular expression is matched,
-     * the end of input is encountered or an I/O-Error occurs.
-     *
-     * @return      the next token
-     * @exception   java.io.IOException  if any I/O-Error occurs
-     */
     public Yytoken yylex() throws java.io.IOException, ParseException
     {
         int zzInput;

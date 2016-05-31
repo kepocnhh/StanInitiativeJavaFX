@@ -1,4 +1,4 @@
-package stan.initiative.commander;
+package stan.initiative.commander.units;
 
 public class Command
 {

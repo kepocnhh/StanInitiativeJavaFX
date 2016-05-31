@@ -1,4 +1,6 @@
-package stan.initiative.commander;
+package stan.initiative.commander.units;
+
+import stan.initiative.commander.Unit;
 
 public class State
 	extends Unit

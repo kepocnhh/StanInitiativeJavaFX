@@ -1,6 +1,6 @@
-package stan.initiative.commander.commands;
+package stan.initiative.commander.units.commands;
 
-import stan.initiative.commander.Command;
+import stan.initiative.commander.units.Command;
 import stan.initiative.commander.Commander;
 
 public class FinishActualModeCommand
