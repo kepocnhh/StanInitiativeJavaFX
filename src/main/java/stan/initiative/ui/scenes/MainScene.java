@@ -227,11 +227,6 @@ public class MainScene
     @Override
     public boolean startRecognize()
     {
-		//Telegram.getInstance().getBotUpdates();
-		//Telegram.getInstance().sendBotMessageMe("Hello world!");
-		Telegram.getInstance().sendBotFistStickerMe();
-		return false;
-		/*
 		try
 		{
 			voice.startRecognize();
@@ -242,7 +237,6 @@ public class MainScene
 			return false;
 		}
         return true;
-		*/
     }
     @Override
     public void stopRecognize()
