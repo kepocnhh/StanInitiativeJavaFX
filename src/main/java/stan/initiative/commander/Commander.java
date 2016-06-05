@@ -156,7 +156,15 @@ public class Commander
         {
             keys = new String[0];
         }
-        if(c.get(InitModeCommand.ID_KEY) != null)
+        if(extra != null)
+        {
+            command = extra.getExtraCommand(c);
+        }
+        if(command != null)
+        {
+            return command;
+        }
+        else if(c.get(InitModeCommand.ID_KEY) != null)
         {
             HashMap initMode = (HashMap)c.get(InitModeCommand.ID_KEY);
             command = new InitModeCommand(commandName, keys, ((Long)initMode.get(InitModeCommand.MODE_NUM_KEY)).intValue());
@@ -194,10 +202,6 @@ public class Commander
                 stateId = modes[parentMode].states[stateN].id;
             }
             command = new FinishStateCommand(commandName, keys, stateId);
-        }
-        else if(extra != null)
-        {
-            command = extra.getExtraCommand(c);
         }
         if(command == null)
         {
@@ -282,7 +286,7 @@ public class Commander
             return;
         }
     }
-    public State getState(State[] states, int state)
+    private State getState(State[] states, int state)
     {
         for(int i = 0; i < states.length; i++)
         {

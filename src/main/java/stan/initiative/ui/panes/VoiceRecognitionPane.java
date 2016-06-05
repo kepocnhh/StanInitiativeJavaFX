@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import stan.initiative.res.values.Colors;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
+import stan.initiative.listeners.ui.controls.buttons.IMouseEventButtonListener;
 
 public class VoiceRecognitionPane
     extends HBox
@@ -22,7 +23,7 @@ public class VoiceRecognitionPane
         super();
         this.setStyle("-fx-background-color: null");
         startRecognize = new VoiceRecognitionButton();
-        startRecognize.setMouseEventListener(new VoiceRecognitionButton.IMouseEventButtonListener()
+        startRecognize.setMouseEventListener(new IMouseEventButtonListener()
         {
             public void mousePressed(MouseEvent event)
             {

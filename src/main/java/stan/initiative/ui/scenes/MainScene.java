@@ -21,14 +21,19 @@ import javafx.stage.StageStyle;
 
 import stan.initiative.commander.Commander;
 import stan.initiative.commander.Controller;
+import stan.initiative.commander.units.states.MusicPlayerState;
 import stan.initiative.helpers.FileHelper;
 import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
+import stan.initiative.listeners.ui.panes.media.music.IMusicPlayerPaneListener;
+import stan.initiative.media.music.Player;
 import stan.initiative.res.values.Strings;
 import stan.initiative.telegram.Telegram;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
+import stan.initiative.ui.panes.media.music.MusicPlayerPane;
+import stan.initiative.ui.stages.MusicPlayerStage;
 
 import stan.voice.recognition.Voice;
 import stan.voice.recognition.GoogleResponse;
@@ -43,17 +48,32 @@ public class MainScene
     private VoiceRecognitionPane mainPane;
     private FileChooser fileChooser;
     private Stage primaryStage;
-    private Stage blockNoteStage;
+    private Stage musicPlayerStage;
 
     private Voice voice;
 
     public MainScene(Stage pStage)
     {
-        super(new VoiceRecognitionPane(pStage), height, width, Color.TRANSPARENT);
+        super(new VoiceRecognitionPane(pStage), width, height, Color.TRANSPARENT);
         this.mainPane = (VoiceRecognitionPane)this.getRoot();
         this.fileChooser = new FileChooser();
         this.primaryStage = pStage;
+        //initMusicPlayerScene();
         init();
+    }
+    private void initMusicPlayerScene()
+    {
+		this.musicPlayerStage = new Stage();
+        this.musicPlayerStage.setAlwaysOnTop(true);
+		this.musicPlayerStage.setScene(new Scene(new MusicPlayerPane(this.musicPlayerStage, new IMusicPlayerPaneListener()
+        {
+            public void exit()
+            {
+            	musicPlayerStage.hide();
+            }
+        }), 48*3, 48 + 48/2, Color.TRANSPARENT));
+		this.musicPlayerStage.initStyle(StageStyle.TRANSPARENT);
+        this.musicPlayerStage.getScene().getStylesheets().add("css/StanTheme.css");
     }
     private void init()
     {
@@ -63,6 +83,7 @@ public class MainScene
     {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem openConfigure = new MenuItem("Open configuration file");
+        MenuItem music = new MenuItem("Music player");
         MenuItem exit = new MenuItem("Exit");
         openConfigure.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -70,6 +91,19 @@ public class MainScene
             public void handle(ActionEvent event)
             {
                 openConfigureFile();
+            }
+        });
+        music.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+            	if(Controller.extraStates.get(MusicPlayerState.ID_KEY) != null)
+            	{
+            		System.out.println("MainScene Controller extraStates MusicPlayerState != null");
+            		Commander.getInstance().addNewState(Controller.extraStates.get(MusicPlayerState.ID_KEY));
+            	}
+                //MusicPlayerStage.getInstance().showMusicPlayer();
             }
         });
         exit.setOnAction(new EventHandler<ActionEvent>()
@@ -80,7 +114,7 @@ public class MainScene
                 exit();
             }
         });
-        contextMenu.getItems().addAll(openConfigure, exit);
+        contextMenu.getItems().addAll(openConfigure, music, exit);
         return contextMenu;
     }
     private void initVoiceRecognition(String googleSpeechApiKey)
@@ -195,6 +229,7 @@ public class MainScene
     {
     	initTelegram((HashMap)main.get("telegram"));
     	initCommander((HashMap)main.get("commander"));
+    	initMedia((HashMap)main.get("media"));
     	HashMap google = (HashMap)main.get("google");
     	HashMap speechapi = (HashMap)google.get("speechapi");
     	SpeechApiHelper.API_KEY = (String)speechapi.get("apikey");
@@ -213,6 +248,19 @@ public class MainScene
         Commander.getInstance().addExtra(new Controller());
 		Commander.getInstance().initData((ArrayList)commander.get("modes"), (ArrayList)commander.get("states"), (ArrayList)commander.get("commands"));
     }
+    private void initMedia(HashMap media)
+    {
+    	initMusicPlayer((HashMap)media.get("music"));
+    }
+    private void initMusicPlayer(HashMap music)
+    {
+    	MusicPlayerStage.getInstance();
+    	Player.getInstance()
+    		.setDefault()
+    		.setVolume(0.2)
+    		.randomOn()
+    		.fromFolder((String)music.get("mainFolder"));
+    }
 
     private void exit()
     {
@@ -224,6 +272,11 @@ public class MainScene
         System.exit(0);
     }
 
+    public boolean startRecognizeOld()
+    {
+    	Player.getInstance().next();
+    	return false;
+    }
     @Override
     public boolean startRecognize()
     {

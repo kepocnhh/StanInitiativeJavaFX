@@ -6,17 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 import stan.initiative.listeners.voice.IRecognizeListener;
+import stan.initiative.listeners.ui.controls.buttons.IMouseEventButtonListener;
 
 public class VoiceRecognitionButton
     extends Button
     implements IRecognizeListener
 {
-    public interface IMouseEventButtonListener
-    {
-        void mousePressed(MouseEvent event);
-        void mouseDragged(MouseEvent event);
-    }
-
     private boolean dragged = false;
     private boolean startRecognize = false;
     private IMouseEventButtonListener mouseEventListener;

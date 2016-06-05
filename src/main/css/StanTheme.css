@@ -1,38 +1,3 @@
-#stan_button {
-    -fx-pref-width: 4.0em;
-    -fx-pref-height: 4.0em;
-    -fx-background-radius: 2.0em;
-    -fx-background-color: null;
-    -fx-border-radius: 2.0em;
-    -fx-border-color: black;
-    -fx-border-width: 2.0px;
-}
-#round_red {
-    -fx-background-color: linear-gradient(#ff5400, #be1d00);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0;
-    -fx-text-fill: white;
-}
-#stan_button:disabled {
-    -fx-border-color: rgb(0, 0, 0, 0.7);
-}
-#stan_button:hover {
-    -fx-background-color: #dcdcdc;
-}
-#stan_button:pressed {
-    -fx-background-color: black;
-    -fx-border-color: white;
-}
-#circle_pane {
-    -fx-pref-width: 4.0em;
-    -fx-pref-height: 4.0em;
-    -fx-background-radius: 2.0em;
-    -fx-background-color: null;
-    -fx-border-radius: 2.0em;
-    -fx-border-color: black;
-    -fx-border-width: 2.0px;
-}
-
 #red_button {
     -fx-padding: 8 15 15 15;
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
@@ -63,14 +28,83 @@
 }
 
 #circle_button {
-	-fx-background-radius: 5em;
-	-fx-min-width: 30px;
-	-fx-min-height: 30px;
-	-fx-max-width: 30px;
-	-fx-max-height: 30px;
+    -fx-background-radius: 5em;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
 }
+
+#mp_exit_button {
+    -fx-background-image: url("../res/ico/close.png");
+    -fx-background-position: center center;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, #202020, 3, 0, 0, 0);
+    -fx-background-radius: 5em;
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-max-width: 18px;
+    -fx-max-height: 18px;
+}
+#mp_exit_button:hover {
+    -fx-background-color: #505050;
+}
+#mp_exit_button:pressed {
+    -fx-background-color: #202020;
+}
+
+#mp_next_button {
+    -fx-background-image: url("../res/ico/next.png");
+    -fx-background-position: center center;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, #202020, 3, 0, 0, 0); 
+    -fx-background-radius: 5em;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+}
+#mp_next_button:hover {
+    -fx-background-color: #505050;
+}
+#mp_next_button:pressed {
+    -fx-background-color: #202020;
+}
+
+#mp_play_button, #mp_pause_button {
+    -fx-background-position: center center;
+    -fx-background-radius: 5em;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+}
+#mp_play_button {
+    -fx-background-color: #ffffff;
+    -fx-background-image: url("../res/ico/play_black.png");
+    -fx-effect: dropshadow(three-pass-box, #202020, 3, 0, 0, 0); 
+}
+#mp_pause_button {
+    -fx-background-color: black;
+    -fx-background-image: url("../res/ico/pause_white.png");
+    -fx-effect: dropshadow(three-pass-box, #000000, 3, 0, 0, 0); 
+}
+#mp_play_button:hover {
+    -fx-background-color: #505050;
+}
+#mp_play_button:pressed {
+    -fx-background-color: #202020;
+}
+#mp_pause_button:hover {
+    -fx-background-color: #202020;
+}
+#mp_pause_button:pressed {
+    -fx-background-color: #505050;
+}
+
 #vr_button_start, #vr_button_stop {
     -fx-background-radius: 5em;
+    -fx-effect: dropshadow(three-pass-box, #202020, 3, 0, 0, 0); 
     -fx-min-width: 56px;
     -fx-min-height: 56px;
     -fx-max-width: 56px;
@@ -86,11 +120,11 @@
     -fx-background-color: #ffeedd;
 }
 #vr_button_stop {
-    -fx-background-color: #ffeedd;
+    -fx-background-color: #ff9944;
 }
 #vr_button_stop:hover {
-    -fx-background-color: #ffaa55;
+    -fx-background-color: #ff7722;
 }
 #vr_button_stop:pressed {
-    -fx-background-color: #ff5400;
+    -fx-background-color: #ff5500;
 }
