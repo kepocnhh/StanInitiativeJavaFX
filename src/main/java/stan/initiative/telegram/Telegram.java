@@ -12,7 +12,7 @@ public class Telegram
         return instance;
     }
 	
-	private Bot bot;
+	private CudgelBot bot;
 	
     private Telegram()
     {
@@ -20,10 +20,10 @@ public class Telegram
 	
     public void setBot(int i, String t, int c)
     {
-		this.bot = new Bot(i, t);
+		this.bot = new CudgelBot(i, t);
 		this.bot.setChatIdMe(c);
 	}
-    public Bot getBot()
+    public CudgelBot getBot()
     {
         return this.bot;
     }

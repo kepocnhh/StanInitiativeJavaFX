@@ -19,3 +19,76 @@ StanInitiative project on JavaFX
 
 ## run_jar
 > "%JAVA_HOME%/bin/javaw" -jar StanInitiative.jar
+
+# Configuration description
+```json
+{
+  "telegram": {},
+  "google": {},
+  "media": {},
+  "commander": {}
+}
+```
+## telegram
+```json
+{
+  "bot": {
+    "id": 123456789,
+    "token": "myawesometelegrambottokenqwertyuiop",
+    "chatIdMe": 12345678
+  }
+}
+```
+
+## google
+```json
+{
+  "speechapi": {
+    "apikey": "qwertyuiop123-qwertyuiop123456789010111"
+  }
+}
+```
+
+## media
+```json
+{
+  "music": {
+    "mainFolder": "C:/Users/username/Music"
+  },
+  "images": {
+    "screenShotFolder": "E:/Downloads"
+  }
+}
+```
+
+## commander
+```json
+{
+  "modes": [],
+  "states": [],
+  "commands": []
+}
+```
+> mode
+```json
+{
+  "name": "mode1",
+  "states": []
+}
+```
+> state
+```json
+{
+  "name": "state1",
+  "commands": []
+}
+```
+> command
+```json
+{
+  "name": "command1",
+  "keys": [
+    "key1"
+  ]
+}
+```

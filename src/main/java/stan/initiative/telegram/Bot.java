@@ -1,6 +1,6 @@
 package stan.initiative.telegram;
 
-public class Bot
+public abstract class Bot
     extends Sender
     implements Consts
 {
@@ -16,6 +16,10 @@ public class Bot
         chatIdMe = c;
     }
 
+    public String sendPhotoMe(byte[] photo)
+    {
+        return sendPhoto(this.chatIdMe, photo);
+    }
     public String sendFistStickerMe()
     {
         return sendStickerMe(STICKER_FIST_ID);

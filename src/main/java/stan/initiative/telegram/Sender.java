@@ -17,6 +17,10 @@ public abstract class Sender
 	{
 		return Connection.sendSticker(url, chat_id, stickerId);
 	}
+	public String sendPhoto(int chat_id, byte[] photo)
+	{
+		return Connection.sendPhoto(url, chat_id, photo);
+	}
 	public String getUpdates()
 	{
 		return Connection.getUpdates(url);
