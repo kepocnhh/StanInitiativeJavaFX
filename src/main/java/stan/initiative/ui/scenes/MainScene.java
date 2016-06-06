@@ -28,6 +28,7 @@ import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.listeners.ui.panes.media.music.IMusicPlayerPaneListener;
 import stan.initiative.media.music.Player;
+import stan.initiative.media.images.ScreenShot;
 import stan.initiative.res.values.Strings;
 import stan.initiative.telegram.Telegram;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
@@ -250,9 +251,10 @@ public class MainScene
     }
     private void initMedia(HashMap media)
     {
-    	initMusicPlayer((HashMap)media.get("music"));
+    	initMusic((HashMap)media.get("music"));
+    	initImages((HashMap)media.get("images"));
     }
-    private void initMusicPlayer(HashMap music)
+    private void initMusic(HashMap music)
     {
     	MusicPlayerStage.getInstance();
     	Player.getInstance()
@@ -260,6 +262,10 @@ public class MainScene
     		.setVolume(0.2)
     		.randomOn()
     		.fromFolder((String)music.get("mainFolder"));
+    }
+    private void initImages(HashMap images)
+    {
+    	ScreenShot.getInstance().setPath((String)images.get("screenShotFolder"));
     }
 
     private void exit()
@@ -272,13 +278,14 @@ public class MainScene
         System.exit(0);
     }
 
-    public boolean startRecognizeOld()
-    {
-    	Player.getInstance().next();
-    	return false;
-    }
     @Override
     public boolean startRecognize()
+    {
+    	ScreenShot.getInstance().saveScreen(ScreenShot.getInstance().grabScreen(15, 15, 111, 111));
+    	return false;
+    }
+    //@Override
+    public boolean startRecognize1()
     {
 		try
 		{
