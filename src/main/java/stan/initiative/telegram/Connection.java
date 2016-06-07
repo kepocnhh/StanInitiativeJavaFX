@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,14 +40,27 @@ public class Connection
 
     static public String sendPhoto(String prefix, int chat_id, byte[] photo)
     {
+		URLConnection urlConn = null;
         try
         {
-            return inputDataFromUrlConnection(buildURLConnectionPost(prefix + "/sendPhoto?chat_id=" + chat_id, photo)).toString();
+            urlConn = buildURLConnectionPost(prefix + "/sendPhoto?chat_id=" + chat_id);
+            otputDataFromUrlConnection(urlConn.getOutputStream(), photo);
         }
         catch(IOException e)
         {
             System.out.println(e.getMessage());
         }
+		if(urlConn != null)
+		{
+			try
+			{
+				return inputDataFromUrlConnection(urlConn).toString();
+			}
+			catch(IOException e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
         return null;
     }
 
@@ -63,45 +77,23 @@ public class Connection
         return null;
     }
 
-    static private URLConnection buildURLConnectionPost(String url, byte[] buffer)
-    throws IOException
+    static private URLConnection buildURLConnectionPost(String url)
+        throws IOException
     {
-        String attachmentName = "bitmap";
-        String attachmentFileName = "bitmap.bmp";
-        String crlf = "\r\n";
-        String twoHyphens = "--";
-        String boundary =  "*****";
-
-        HttpURLConnection urlConn = (HttpURLConnection)buildURLConnection(url);
-        System.out.println("Connection buildURLConnection");
+        URLConnection urlConn = new URL(url).openConnection();
         urlConn.setDoOutput(true);
-        System.out.println("Connection setDoOutput");
-        urlConn.setRequestMethod("POST");
-
-        //urlConn.setRequestProperty("Connection", "Keep-Alive");
-        urlConn.setRequestProperty("Cache-Control", "no-cache");
-        urlConn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-        //urlConn.setRequestProperty("photo", "photo");
-        System.out.println("Connection setRequestProperty");
-
-        DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
-        System.out.println("Connection getOutputStream");
-
-        dos.writeBytes(twoHyphens + boundary + crlf);
-        dos.writeBytes("Content-Disposition: form-data; name=\"photo\";filename=\"\"" + crlf);
-        dos.writeBytes(crlf);
-        System.out.println("Connection writeBytes");
-
-        dos.write(buffer);
-        System.out.println("Connection write");
-        dos.writeBytes(crlf);
-        dos.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
-        dos.flush();
-        dos.close();
-        System.out.println("Connection close");
+        urlConn.setUseCaches(false);
+        urlConn.setRequestProperty("Content-Type", "image/png");
         return urlConn;
     }
-
+    static private void otputDataFromUrlConnection(OutputStream outputStream, byte[] data)
+        throws IOException
+    {
+        outputStream.write(data, 0, data.length);
+        outputStream.close();
+        System.out.println("Connection close");
+    }
+	
     static private URLConnection buildURLConnection(String url)
     throws IOException
     {
@@ -115,6 +107,7 @@ public class Connection
     {
         BufferedReader br = new BufferedReader(
             new InputStreamReader(urlConn.getInputStream(), Charset.forName("UTF-8")));
+        System.out.println("Connection getInputStream");
         StringBuilder completeResponse = new StringBuilder();
         String response = br.readLine();
         while(response != null)
@@ -122,7 +115,7 @@ public class Connection
             completeResponse.append(response);
             response = br.readLine();
         }
-        br.close();
+		br.close();
         return completeResponse;
     }
 }

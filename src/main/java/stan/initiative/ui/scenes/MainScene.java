@@ -277,8 +277,8 @@ public class MainScene
         System.exit(0);
     }
 
-    //@Override
-    public boolean startRecognize1()
+    @Override
+    public boolean startRecognize()
     {
         String answer = Telegram.getInstance()
         	.getBot()
@@ -286,8 +286,8 @@ public class MainScene
         System.out.println("Telegram - " + answer);
         return false;
     }
-    @Override
-    public boolean startRecognize()
+    //@Override
+    public boolean startRecognize1()
     {
         try
         {
