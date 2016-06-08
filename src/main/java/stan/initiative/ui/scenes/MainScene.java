@@ -28,15 +28,15 @@ import stan.initiative.helpers.google.SpeechApiHelper;
 import stan.initiative.helpers.json.JSONParser;
 import stan.initiative.listeners.voice.IRecognizeListener;
 import stan.initiative.listeners.ui.panes.media.music.IMusicPlayerPaneListener;
-import stan.initiative.media.music.Player;
 import stan.initiative.media.images.ScreenShot;
+import stan.initiative.media.music.Player;
 import stan.initiative.res.values.Strings;
-import stan.initiative.telegram.IRequestListener;
 import stan.initiative.telegram.Telegram;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
 import stan.initiative.ui.panes.media.music.MusicPlayerPane;
 import stan.initiative.ui.stages.MusicPlayerStage;
+import stan.initiative.ui.stages.ScreenShotStage;
 
 import stan.voice.recognition.Voice;
 import stan.voice.recognition.GoogleResponse;
@@ -87,6 +87,7 @@ public class MainScene
         ContextMenu contextMenu = new ContextMenu();
         MenuItem openConfigure = new MenuItem("Open configuration file");
         MenuItem music = new MenuItem("Music player");
+        MenuItem screenShot = new MenuItem("Create screenshot");
         MenuItem exit = new MenuItem("Exit");
         openConfigure.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -103,10 +104,16 @@ public class MainScene
             {
                 if(Controller.extraStates.get(MusicPlayerState.ID_KEY) != null)
                 {
-                    System.out.println("MainScene Controller extraStates MusicPlayerState != null");
                     Commander.getInstance().addNewState(Controller.extraStates.get(MusicPlayerState.ID_KEY));
                 }
-                //MusicPlayerStage.getInstance().showMusicPlayer();
+            }
+        });
+        screenShot.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                ScreenShotStage.getInstance().showScreenShot();
             }
         });
         exit.setOnAction(new EventHandler<ActionEvent>()
@@ -117,7 +124,7 @@ public class MainScene
                 exit();
             }
         });
-        contextMenu.getItems().addAll(openConfigure, music, exit);
+        contextMenu.getItems().addAll(openConfigure, music, screenShot, exit);
         return contextMenu;
     }
     private void initVoiceRecognition(String googleSpeechApiKey)
@@ -279,26 +286,13 @@ public class MainScene
         System.exit(0);
     }
 
-    @Override
-    public boolean startRecognize()
-    {
-        Telegram.getInstance()
-        	.getBot()
-        	.sendPhotoMe(ScreenShot.getInstance().grabScreen(1555, 777, 222, 222), new IRequestListener()
-			{
-				public void answer(String answer)
-				{
-					System.out.println("Telegram answer - " + answer);
-				}
-				public void error(IOException error)
-				{
-					System.out.println("Telegram error - " + error.getMessage());
-				}
-			});
-        return false;
-    }
     //@Override
     public boolean startRecognize1()
+    {
+        return false;
+    }
+    @Override
+    public boolean startRecognize()
     {
         try
         {

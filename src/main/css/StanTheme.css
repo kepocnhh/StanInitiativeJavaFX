@@ -35,7 +35,44 @@
     -fx-max-height: 30px;
 }
 
-#mp_exit_button {
+#ss_tofolder_button {
+    -fx-background-color: #ffffff;
+    -fx-background-image: url("../res/ico/download.png");
+    -fx-effect: dropshadow(three-pass-box, #000, 3, 0, 0, 0);
+	-fx-background-repeat: no-repeat no-repeat;
+    -fx-background-position: center center;
+    -fx-background-radius: 5em;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+}
+#ss_tofolder_button:hover {
+    -fx-background-color: #505050;
+}
+#ss_tofolder_button:pressed {
+    -fx-background-color: #202020;
+}
+#ss_totelegram_button {
+    -fx-background-color: #33b5e5;
+    -fx-background-image: url("../res/ico/telegram.png");
+    -fx-effect: dropshadow(three-pass-box, #000, 3, 0, 0, 0);
+	-fx-background-repeat: no-repeat no-repeat;
+    -fx-background-position: center center;
+    -fx-background-radius: 5em;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+}
+#ss_totelegram_button:hover {
+    -fx-background-color: #03a9f4;
+}
+#ss_totelegram_button:pressed {
+    -fx-background-color: #2196f3;
+}
+
+#mp_exit_button, #ss_exit_button {
     -fx-background-image: url("../res/ico/close.png");
     -fx-background-position: center center;
     -fx-background-color: #ffffff;
@@ -46,10 +83,10 @@
     -fx-max-width: 18px;
     -fx-max-height: 18px;
 }
-#mp_exit_button:hover {
+#mp_exit_button:hover, #ss_exit_button:hover {
     -fx-background-color: #505050;
 }
-#mp_exit_button:pressed {
+#mp_exit_button:pressed, #ss_exit_button:pressed {
     -fx-background-color: #202020;
 }
 
