@@ -1,5 +1,7 @@
 package stan.initiative.telegram;
 
+import java.awt.image.BufferedImage;
+
 public abstract class Sender
 {
 	private String url;
@@ -17,7 +19,7 @@ public abstract class Sender
 	{
 		return Connection.sendSticker(url, chat_id, stickerId);
 	}
-	public String sendPhoto(int chat_id, byte[] photo)
+	public String sendPhoto(int chat_id, BufferedImage photo)
 	{
 		return Connection.sendPhoto(url, chat_id, photo);
 	}

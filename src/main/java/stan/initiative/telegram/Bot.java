@@ -1,5 +1,7 @@
 package stan.initiative.telegram;
 
+import java.awt.image.BufferedImage;
+
 public abstract class Bot
     extends Sender
     implements Consts
@@ -16,7 +18,7 @@ public abstract class Bot
         chatIdMe = c;
     }
 
-    public String sendPhotoMe(byte[] photo)
+    public String sendPhotoMe(BufferedImage photo)
     {
         return sendPhoto(this.chatIdMe, photo);
     }

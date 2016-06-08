@@ -282,7 +282,7 @@ public class MainScene
     {
         String answer = Telegram.getInstance()
         	.getBot()
-        	.sendPhotoMe(ScreenShot.getInstance().grabScreenBytes(15, 15, 111, 111));
+        	.sendPhotoMe(ScreenShot.getInstance().grabScreen(15, 15, 111, 111));
         System.out.println("Telegram - " + answer);
         return false;
     }

@@ -1,10 +1,12 @@
 package stan.initiative.telegram;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -38,7 +40,26 @@ public class Connection
         return null;
     }
 
-    static public String sendPhoto(String prefix, int chat_id, byte[] photo)
+    static public String sendPhoto(String prefix, int chat_id, BufferedImage photo)
+    {
+		Object r = null;
+        try
+        {
+			MultipartUtility multipart = new MultipartUtility(prefix + "/sendPhoto?chat_id=" + chat_id, "UTF-8", "----WebKitFormBoundary7MA4YWxkTrZu0gW", photo);
+			System.out.println("Connection MultipartUtility");
+			multipart.addFilePart("photo", new File("C:/Users/toha/Downloads/tpng.png"));
+			System.out.println("Connection addFilePart");
+			URLConnection urlConn = multipart.execute();
+			return inputDataFromUrlConnection(urlConn).toString();
+			//System.out.println("Connection response - " + r);
+		}
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+		return "Connection response - " + r;
+	}
+    static public String sendPhotoOld(String prefix, int chat_id, byte[] photo)
     {
 		URLConnection urlConn = null;
         try
