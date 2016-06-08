@@ -2,12 +2,8 @@ package stan.initiative.telegram;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.File;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -41,17 +37,18 @@ public class Connection
     }
 
     static public String sendPhoto(String prefix, int chat_id, BufferedImage photo)
+		throws IOException
+    {
+		return inputDataFromUrlConnection(
+			new PostBufferedImage(prefix + "/sendPhoto?chat_id=" + chat_id, photo)
+				.execute()).toString();
+	}
+    static public String sendPhotoOld(String prefix, int chat_id, BufferedImage photo)
     {
 		Object r = null;
         try
         {
-			MultipartUtility multipart = new MultipartUtility(prefix + "/sendPhoto?chat_id=" + chat_id, "UTF-8", "----WebKitFormBoundary7MA4YWxkTrZu0gW", photo);
-			System.out.println("Connection MultipartUtility");
-			multipart.addFilePart("photo", new File("C:/Users/toha/Downloads/tpng.png"));
-			System.out.println("Connection addFilePart");
-			URLConnection urlConn = multipart.execute();
-			return inputDataFromUrlConnection(urlConn).toString();
-			//System.out.println("Connection response - " + r);
+			return inputDataFromUrlConnection(new PostBufferedImage(prefix + "/sendPhoto?chat_id=" + chat_id, photo).execute()).toString();
 		}
         catch(IOException e)
         {
@@ -59,31 +56,6 @@ public class Connection
         }
 		return "Connection response - " + r;
 	}
-    static public String sendPhotoOld(String prefix, int chat_id, byte[] photo)
-    {
-		URLConnection urlConn = null;
-        try
-        {
-            urlConn = buildURLConnectionPost(prefix + "/sendPhoto?chat_id=" + chat_id);
-            otputDataFromUrlConnection(urlConn.getOutputStream(), photo);
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-		if(urlConn != null)
-		{
-			try
-			{
-				return inputDataFromUrlConnection(urlConn).toString();
-			}
-			catch(IOException e)
-			{
-				System.out.println(e.getMessage());
-			}
-		}
-        return null;
-    }
 
     static public String getUpdates(String prefix)
     {
@@ -98,23 +70,6 @@ public class Connection
         return null;
     }
 
-    static private URLConnection buildURLConnectionPost(String url)
-        throws IOException
-    {
-        URLConnection urlConn = new URL(url).openConnection();
-        urlConn.setDoOutput(true);
-        urlConn.setUseCaches(false);
-        urlConn.setRequestProperty("Content-Type", "image/png");
-        return urlConn;
-    }
-    static private void otputDataFromUrlConnection(OutputStream outputStream, byte[] data)
-        throws IOException
-    {
-        outputStream.write(data, 0, data.length);
-        outputStream.close();
-        System.out.println("Connection close");
-    }
-	
     static private URLConnection buildURLConnection(String url)
     throws IOException
     {

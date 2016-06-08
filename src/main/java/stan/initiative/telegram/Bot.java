@@ -1,6 +1,7 @@
 package stan.initiative.telegram;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public abstract class Bot
     extends Sender
@@ -19,6 +20,7 @@ public abstract class Bot
     }
 
     public String sendPhotoMe(BufferedImage photo)
+		throws IOException
     {
         return sendPhoto(this.chatIdMe, photo);
     }

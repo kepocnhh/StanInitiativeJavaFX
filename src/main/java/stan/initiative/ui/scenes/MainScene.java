@@ -1,6 +1,7 @@
 package stan.initiative.ui.scenes;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,6 +31,7 @@ import stan.initiative.listeners.ui.panes.media.music.IMusicPlayerPaneListener;
 import stan.initiative.media.music.Player;
 import stan.initiative.media.images.ScreenShot;
 import stan.initiative.res.values.Strings;
+import stan.initiative.telegram.IRequestListener;
 import stan.initiative.telegram.Telegram;
 import stan.initiative.ui.controls.buttons.VoiceRecognitionButton;
 import stan.initiative.ui.panes.VoiceRecognitionPane;
@@ -280,10 +282,19 @@ public class MainScene
     @Override
     public boolean startRecognize()
     {
-        String answer = Telegram.getInstance()
+        Telegram.getInstance()
         	.getBot()
-        	.sendPhotoMe(ScreenShot.getInstance().grabScreen(15, 15, 111, 111));
-        System.out.println("Telegram - " + answer);
+        	.sendPhotoMe(ScreenShot.getInstance().grabScreen(1555, 777, 222, 222), new IRequestListener()
+			{
+				public void answer(String answer)
+				{
+					System.out.println("Telegram answer - " + answer);
+				}
+				public void error(IOException error)
+				{
+					System.out.println("Telegram error - " + error.getMessage());
+				}
+			});
         return false;
     }
     //@Override

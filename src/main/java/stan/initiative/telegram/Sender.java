@@ -1,6 +1,7 @@
 package stan.initiative.telegram;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public abstract class Sender
 {
@@ -20,6 +21,7 @@ public abstract class Sender
 		return Connection.sendSticker(url, chat_id, stickerId);
 	}
 	public String sendPhoto(int chat_id, BufferedImage photo)
+		throws IOException
 	{
 		return Connection.sendPhoto(url, chat_id, photo);
 	}
